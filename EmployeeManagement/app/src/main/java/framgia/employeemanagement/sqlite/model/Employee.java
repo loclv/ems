@@ -72,7 +72,7 @@ public class Employee {
     }
 
     // getter
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 
@@ -88,7 +88,7 @@ public class Employee {
         return this.phone_number;
     }
 
-    public  String getDepartment() {
+    public String getDepartment() {
         return this.department;
     }
 
