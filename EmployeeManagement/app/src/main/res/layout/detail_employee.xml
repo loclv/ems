@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_left"
+        android:layout_marginRight="@dimen/padding_right"
+        android:layout_marginEnd="@dimen/padding_bottom"
+        android:layout_marginTop="@dimen/padding_bottom"
+        android:orientation="vertical">
+        <TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/size_sub"
+                android:text="Avatar"
+                android:id="@+id/textAvartar" />
+            <ImageView
+                android:layout_height="@dimen/potrait_height"
+                android:layout_width="@dimen/potrait_width"
+                android:layout_marginRight="0dp"
+                android:scaleType="fitCenter"
+                android:id="@+id/imageAvatar"
+                android:layout_column="1" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/size_sub"
+                android:text="@string/name"
+                android:id="@+id/textViewName" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/editName"
+                android:layout_gravity="left" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/size_sub"
+                android:text="@string/birthday"
+                android:id="@+id/textViewBirthday" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:ems="10"
+                android:id="@+id/editBirthday"
+                android:layout_gravity="left" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/size_sub"
+                android:text="@string/place_of_birth"
+                android:id="@+id/textPlaceofBirth" />
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinnerPlaceOfBirth"
+                android:layout_column="1" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/size_sub"
+                android:text="@string/phone"
+                android:id="@+id/textPhone" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:ems="10"
+                android:id="@+id/editPhone"
+                android:layout_column="1" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/size_sub"
+                android:text="@string/department"
+                android:id="@+id/textDeparment" />
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinnerDeparment"
+                android:layout_column="1" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/size_sub"
+                android:text="@string/position"
+                android:id="@+id/textPositon" />
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinnerPosition"
+                android:layout_column="1" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/size_sub"
+                android:text="@string/status"
+                android:id="@+id/textStatus" />
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinnerStatus"
+                android:layout_column="1" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/size_sub"
+                android:text="@string/joindate"
+                android:id="@+id/textJoinDate"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:ems="10"
+                android:id="@+id/editJoinDate"
+                android:layout_column="1" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/size_sub"
+                android:text="@string/leavedate"
+                android:id="@+id/textLeavedate" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:ems="10"
+                android:id="@+id/editLeaveDate"
+                android:layout_column="1" />
+        </TableRow>
+    </TableLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_column="0">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit"
+            android:id="@+id/buttonEdit"
+            android:layout_column="1"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Update"
+            android:id="@+id/btUpdate"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:id="@+id/buttonCancelUpdate"
+            android:layout_alignBottom="@+id/btUpdate"
+            android:layout_toRightOf="@+id/btUpdate"
+            android:layout_toEndOf="@+id/btUpdate" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add"
+            android:id="@+id/buttonAdd"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/buttonCancelUpdate"
+            android:layout_toEndOf="@+id/buttonCancelUpdate" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:id="@+id/buttonCancelAdd"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/buttonAdd"
+            android:layout_toEndOf="@+id/buttonAdd" />
+    </RelativeLayout>
+</LinearLayout>
