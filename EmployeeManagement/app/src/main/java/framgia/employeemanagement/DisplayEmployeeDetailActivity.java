@@ -3,7 +3,6 @@ package framgia.employeemanagement;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -23,22 +22,21 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.channels.FileChannel;
 import java.util.Calendar;
+
+import framgia.employeemanagement.sqlite.helper.DatabaseHelper;
 
 /**
  * Created by FRAMGIA\nguyen.huu.quyen on 06/10/2015.
  */
 public class DisplayEmployeeDetailActivity extends Activity {
+    public static final String EMPLOYEE_ID="EPLOYEE_ID";
     private static final int VIEWMODE = 1;
     private static final int ADDMODE = 2;
     private static final int EDITMODE = 3;
@@ -64,7 +62,9 @@ public class DisplayEmployeeDetailActivity extends Activity {
     private static ArrayAdapter<CharSequence> adapterSpinerStatus;
     private Uri selectedImageUri;
     private static Employee employee;
-    private String imageName = "Photo1.jpeg";
+    private DatabaseHelper db;
+    private long EmployeeId;
+    private int displayMode;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,11 +72,16 @@ public class DisplayEmployeeDetailActivity extends Activity {
         //Set id to items
         setFindViewById();
         //receive intent to set mode
-        Intent intent = getIntent();
-        int displayMode = intent.getIntExtra(getString(R.string.display_mode), VIEWMODE);
+        getIntentFromPreviousScreen();
+        //set Mode Display
         setModeDisplay(displayMode);
         //set listener for buttons
         setButtonListenner();
+    }
+    public void getIntentFromPreviousScreen(){
+        Intent intent = getIntent();
+        displayMode = intent.getIntExtra(getString(R.string.display_mode), VIEWMODE);
+        EmployeeId = intent.getLongExtra(EMPLOYEE_ID,0);
     }
 
     public void setFindViewById() {
@@ -118,6 +123,7 @@ public class DisplayEmployeeDetailActivity extends Activity {
         imgavartar = (ImageView) findViewById(R.id.imageAvatar);
         imgavartar.setImageResource(R.drawable.avar);
         employee = new Employee();
+        db = new DatabaseHelper(this);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -157,7 +163,6 @@ public class DisplayEmployeeDetailActivity extends Activity {
     private void copyFile() {
         InputStream in = null;
         OutputStream out = null;
-        String outputPath;
         try {
             //create output directory if it doesn't exist
             File root = Environment.getExternalStorageDirectory();
@@ -166,7 +171,7 @@ public class DisplayEmployeeDetailActivity extends Activity {
                 dir.mkdirs();
             }
             in = new FileInputStream(getPathFromUri(selectedImageUri, DisplayEmployeeDetailActivity.this));
-            String imagePath = getString(R.string.format_image_path,dir.getPath(), imageName);
+            String imagePath = getString(R.string.format_image_path,dir.getPath(),employee.getName());
             out = new FileOutputStream(imagePath);
             employee.setImage(imagePath);
             byte[] buffer = new byte[1024];
@@ -220,7 +225,7 @@ public class DisplayEmployeeDetailActivity extends Activity {
         txname.setText(employee.getName());
         txname.setEnabled(false);
         //Set Place of birth
-        spinnerPlaceOfBirth.setSelection(adapterSpinerPlaceOfBirth.getPosition(employee.getAddress()));
+        spinnerPlaceOfBirth.setSelection(adapterSpinerPlaceOfBirth.getPosition(employee.getPlaceOfBirth()));
         spinnerPlaceOfBirth.setEnabled(false);
         //Set birthday
         txBirthDay.setText(employee.getBirthday());
@@ -255,17 +260,7 @@ public class DisplayEmployeeDetailActivity extends Activity {
     //Get an Employee
     public void getEmployee() {
         //TODO get employee informaiton
-        //create an annonymos employee
-        employee.setName("Emplpyee");
-        employee.setPosition("Manager");
-        employee.setBirthday("04/07/1989");
-        employee.setLeaveDate("");
-        employee.setJoinDate("15/09/2015");
-        employee.setAddress("Đà Nẵng");
-        employee.setDepartment("Education");
-        employee.setPhone("0905477041");
-        employee.setImage("/storage/emulated/0/QuyenNH/photo1.jpeg");
-        employee.setStatus("Parttime");
+        employee = db.getEmployee(EmployeeId);
     }
 
     //Get an Employee
@@ -276,20 +271,10 @@ public class DisplayEmployeeDetailActivity extends Activity {
         employee.setBirthday(txBirthDay.getText().toString());
         employee.setLeaveDate(txLeaveDate.getText().toString());
         employee.setJoinDate(txJoinDate.getText().toString());
-        employee.setAddress(spinnerPlaceOfBirth.getSelectedItem().toString());
+        employee.setPlaceOfBirth(spinnerPlaceOfBirth.getSelectedItem().toString());
         employee.setDepartment(spinnerDepartment.getSelectedItem().toString());
         employee.setPhone(txPhone.getText().toString());
         employee.setStatus(spinnerStatus.getSelectedItem().toString());
-    }
-
-    public void addEmployee() {
-        //TODO add new employee
-
-    }
-
-    public void updateEmployee() {
-        //TODO Update employee
-
     }
 
     /******
@@ -350,11 +335,12 @@ public class DisplayEmployeeDetailActivity extends Activity {
             int mMonth = c.get(Calendar.MONTH);
             int mDay = c.get(Calendar.DAY_OF_MONTH);
             DatePickerDialog.OnDateSetListener callback;
+
             switch (v.getId()) {
                 case R.id.btUpdate:
-                    copyFile();
                     setEmployee();
-                    updateEmployee();
+                    copyFile();
+                    db.updateEmployee(employee,EmployeeId);
                     displayEmployeeDetail();
                     setButton(VIEWMODE);
                     break;
@@ -363,9 +349,9 @@ public class DisplayEmployeeDetailActivity extends Activity {
                     setButton(VIEWMODE);
                     break;
                 case R.id.buttonAdd:
-                    copyFile();
                     setEmployee();
-                    addEmployee();
+                    copyFile();
+                    db.addEmployee(employee);
                     displayEmployeeDetail();
                     setButton(VIEWMODE);
                     break;

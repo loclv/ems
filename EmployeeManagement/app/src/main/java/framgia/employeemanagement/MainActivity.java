@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -18,6 +19,7 @@ public class MainActivity extends Activity {
     private static Button sButtonAddnew;
     private static ListView sListDepartment;
     private static Spinner sSpinnerDepartment;
+    private static EditText sEmployeeName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,13 +41,14 @@ public class MainActivity extends Activity {
         sSpinnerDepartment = (Spinner) findViewById(R.id.spDepMain);
         sButtonSearchMain = (Button) findViewById(R.id.btSearchMain);
         sButtonAddnew = (Button) findViewById(R.id.btAdd);
+        sEmployeeName = (EditText) findViewById(R.id.txEmployeeMain);
     }
 
     private void setSpinnerMain() {
         // Creat spinner for Department list
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapterSpiner = ArrayAdapter.createFromResource(this,
-                R.array.deparmentSpinner_array, android.R.layout.simple_spinner_item);
+            R.array.deparmentSpinner_array, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
         adapterSpiner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
@@ -56,7 +59,7 @@ public class MainActivity extends Activity {
         //Creat listview of Deparments
         // Create an ArrayAdapter using the string array and a default Listview layout
         ArrayAdapter<CharSequence> adapterListview = ArrayAdapter.createFromResource(this,
-                R.array.deparmentListview_array, android.R.layout.simple_spinner_item);
+            R.array.deparmentListview_array, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
         adapterListview.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Apply the adapter to the ListView
@@ -67,7 +70,10 @@ public class MainActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(MainActivity.this, DisplayEmployeeListActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString(getString(R.string.employee_list_mode), parent.getAdapter().getItem(position).toString());
+                bundle.putString(getString(R.string.employee_list_mode),
+                    parent.getAdapter().getItem(position).toString());
+                bundle.putString(getString(R.string.intent_department),
+                    parent.getAdapter().getItem(position).toString());
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -80,7 +86,12 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, DisplayEmployeeListActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString(getString(R.string.employee_list_mode), getString(R.string.result));
+                bundle
+                    .putString(getString(R.string.employee_list_mode), getString(R.string.result));
+                bundle.putString(getString(R.string.intent_employee_name),
+                    sEmployeeName.getText().toString());
+                bundle.putString(getString(R.string.intent_department), sSpinnerDepartment
+                    .getSelectedItem().toString());
                 intent.putExtras(bundle);
                 startActivity(intent);
             }

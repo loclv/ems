@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Employee Management</string>
     <string name="hello_world">Hello world!</string>
@@ -26,6 +27,9 @@
     <string name="question_edit_employee">Do you want to edit this employee?</string>
     <string name="folder_photo">EMSPhoto</string>
     <string name="display_mode">DisplayMode</string>
+    <string name="intent_employee_name">EmployeeName</string>
+    <string name="intent_employee_ID">EmployeeID</string>
+    <string name="intent_department">Department</string>
     <string name="employee_list_mode">EmployeeListMode</string>
     <string name="format_date">%1$s/%2$s/%3$s</string>
     <string name="format_image_path">%1$s/%2$s</string>

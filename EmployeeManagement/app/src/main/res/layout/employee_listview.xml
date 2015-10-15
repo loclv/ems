@@ -1,59 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingTop="0dip" android:layout_gravity="top"
-    >
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_gravity="top"
+             android:descendantFocusability="blocksDescendants"
+             android:paddingTop="@dimen/padding_top">
+
     <TableRow>
+
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/padding_left"
-            android:paddingTop="@dimen/padding_top"
-            android:paddingBottom="@dimen/padding_bottom"
-            android:paddingRight="@dimen/padding_right"
-            >
+                      xmlns:tools="http://schemas.android.com/tools"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:paddingBottom="@dimen/padding_bottom"
+                      android:paddingLeft="@dimen/padding_left"
+                      android:paddingRight="@dimen/padding_right"
+                      android:paddingTop="@dimen/padding_top">
+
             <ImageView
-                android:layout_height="@dimen/potrait_height"
+                android:id="@+id/employeeAvartarForm"
                 android:layout_width="@dimen/potrait_width"
+                android:layout_height="@dimen/potrait_height"
                 android:layout_gravity="fill_vertical"
                 android:scaleType="fitCenter"
-                android:id="@+id/employeeAvartarForm"
                 />
         </LinearLayout>
+
         <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="0dip" android:layout_gravity="top"
-            >
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_gravity="top"
+                     android:paddingTop="@dimen/padding_top">
+
             <TableRow>
+
                 <TextView
                     android:id="@+id/employeeNameForm"
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="left|center_vertical"
-                    android:textSize="@dimen/size_name"
                     android:layout_marginLeft="@dimen/padding_left"
                     android:layout_marginTop="@dimen/padding_top"
-                    android:textColor="#000000"
                     android:layout_span="1"
+                    android:layout_weight="1"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/size_name"
                     />
             </TableRow>
+
             <TableRow>
+
                 <TextView
-                    android:text=""
                     android:id="@+id/employeeDetailForm"
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="left|center_vertical"
-                    android:textSize="@dimen/size_sub"
-                    android:textColor="#000000"
                     android:layout_marginLeft="@dimen/padding_left"
                     android:layout_marginTop="@dimen/padding_top"
-                    android:gravity="left"/>
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/size_sub"/>
             </TableRow>
         </TableLayout>
     </TableRow>

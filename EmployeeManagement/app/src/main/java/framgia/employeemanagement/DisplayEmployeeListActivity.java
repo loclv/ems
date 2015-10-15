@@ -2,46 +2,59 @@ package framgia.employeemanagement;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.List;
+
+import framgia.employeemanagement.Ultility.Libs;
+import framgia.employeemanagement.sqlite.helper.DatabaseHelper;
 
 /**
  * Created by FRAMGIA\nguyen.huu.quyen on 05/10/2015.
  */
 public class DisplayEmployeeListActivity extends Activity {
+    private static final int VIEWMODE = 1;
+    private static final int EDITMODE = 3;
     private static ListView sListEmployee;
     private static EmployeeAdapter sEmployeeAdapter;
     private static TextView sTextResultList;
+    private static EditText sEditTextEmployeeName;
     private static Button sButtonSearchOnList;
-    private static ArrayList<Employee> sEmployeeArr = new ArrayList<Employee>();
-    private static DisplayEmployeeListActivity sEmployeeActivity = null;
+    private static List<Employee> sEmployeeArr;
+    private DatabaseHelper db;
+    private String EmployeeName = "";
+    private String NameOfList = "";
+    private String DepartmentName = "";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.display_employee_list);
+        db = new DatabaseHelper(this);
         setFindViewById();
         //Update name of list data
         updateNameDataList();
         //set data to list
-        setListData(1);
+        setListData();
     }
 
     public void setFindViewById() {
+        sEditTextEmployeeName = (EditText) findViewById(R.id.txEmployeeList);
         sTextResultList = (TextView) findViewById(R.id.txList);
         sButtonSearchOnList = (Button) findViewById(R.id.btSearchList);
         sButtonSearchOnList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO get new list and display
-                setListData(2);
+                NameOfList = getString(R.string.result);
+                EmployeeName = sEditTextEmployeeName.getText().toString();
+                setListData();
             }
         });
     }
@@ -51,41 +64,50 @@ public class DisplayEmployeeListActivity extends Activity {
      *************/
     public void updateNameDataList() {
         Intent intent = getIntent();
-        String Ename = intent.getStringExtra(getString(R.string.employee_list_mode));
-        //Update name of departmmen
-        sTextResultList.setText(Ename);
+        NameOfList = intent.getStringExtra(getString(R.string.employee_list_mode));
+        EmployeeName = intent.getStringExtra(getString(R.string.intent_employee_name));
+        DepartmentName = intent.getStringExtra(getString(R.string.intent_department));
+        //Update name of department
+        sTextResultList.setText(NameOfList);
     }
 
     /******
      * Function to set data in ArrayList
      *************/
-    public void setListData(int mod) {
-        sEmployeeArr.clear();
-        for (int i = 0; i < 8; i++) {
-
-            final Employee employee = new Employee();
-            /******* Firstly take data in model object ******/
-            if (mod == 1) {
-                employee.setName("Nguyen Huu Quyen  " + i);
-            } else {
-                employee.setName("Ha Minh Hoang  " + i);
-            }
-            employee.setImage("/storage/emulated/0/QuyenNH/employee00" + i + ".jpg");
-            employee.setPosition("Position " + i);
-            employee.setJoinDate("15/08/2014");
-            employee.setLeaveDate("");
-            if (i == 3 || i == 5) {
-                employee.setLeaveDate("15/09/2015");
-            }
-            /******** Take Model Object in ArrayList **********/
-            sEmployeeArr.add(employee);
-            sEmployeeActivity = this;
-            Resources res = getResources();
-            sListEmployee = (ListView) findViewById(R.id.listEmployee);  // List defined in XML ( See Below )
-            /**************** Create Custom Adapter *********/
-            sEmployeeAdapter = new EmployeeAdapter(sEmployeeActivity, sEmployeeArr, res);
-            sListEmployee.setAdapter(sEmployeeAdapter);
+    public void setListData() {
+        if (NameOfList.equals(getString(R.string.result))) {
+            sEmployeeArr = db.getListEmployees(EmployeeName, DepartmentName);
+        } else {
+            sEmployeeArr = db.getListEmployeesDepartment(NameOfList);
         }
+        sListEmployee = (ListView) findViewById(R.id.listEmployee);
+        /**************** Create Custom Adapter *********/
+        sEmployeeAdapter = new EmployeeAdapter(this, sEmployeeArr);
+        sListEmployee.setAdapter(sEmployeeAdapter);
+        sListEmployee.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(DisplayEmployeeListActivity.this,
+                    DisplayEmployeeDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt(DisplayEmployeeListActivity.this.getString(R.string.display_mode),
+                    VIEWMODE);
+                bundle.putLong(DisplayEmployeeDetailActivity.EMPLOYEE_ID,
+                    sEmployeeArr.get(position).getId());
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+        sListEmployee.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position,
+                                           long id) {
+                final Employee employee = sEmployeeArr.get(position);
+                Libs lib = new Libs(DisplayEmployeeListActivity.this);
+                lib.longClickAlert(employee.getId());
+                return true;
+            }
+        });
     }
 
     @Override
